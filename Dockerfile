@@ -36,6 +36,8 @@ RUN wget -O /opt/spark-3.5.0-bin-hadoop3.tgz https://archive.apache.org/dist/spa
 RUN tar -xzf /opt/spark-3.5.0-bin-hadoop3.tgz -C /opt && \
     ln -s /opt/spark-3.5.0-bin-hadoop3 /opt/spark
 
+COPY database_connectors/mysql-connector-j-8.1.0.jar /opt/database_connectors/mysql-connector-j-8.1.0.jar
+
 COPY spark/ /opt/spark/
 
 COPY data/ /opt/data

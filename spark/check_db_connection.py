@@ -1,9 +1,11 @@
+import os
 from pyspark.sql import SparkSession
 
+MYSQL_CONNECTOR_PATH = os.environ['MYSQL_CONNECTOR_PATH']
 
 spark = SparkSession.builder \
     .appName("DatabaseConnectionTest") \
-    .config("spark.driver.extraClassPath", "mysql-connector-j-8.1.0.jar") \
+    .config("spark.driver.extraClassPath", MYSQL_CONNECTOR_PATH) \
     .getOrCreate()
 
 

@@ -39,7 +39,7 @@ with DAG(
     )
 
     insert_posts_data = BashOperator(
-        task_id='insert_users_data',
+        task_id='insert_posts_data',
         bash_command=insert_posts_data_bash,
     )
 
