@@ -8,8 +8,9 @@ Setup:
 
 1. Clone the repo
 2. Run the command "docker-compose up"
+3. Wait for Airflow, Databases to be Up and Running
 
-Run Dags:
+Airflow UI:
 
 1. Load http://0.0.0.0:8084/home
    
