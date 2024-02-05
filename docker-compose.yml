@@ -1,0 +1,58 @@
+version: '2'
+
+services:
+  mysql_container:
+    container_name: 'mysql_container'
+    image: mysql:5.7
+    mem_limit: 8g
+    ports:
+      - '3307:3306'
+    environment:
+       MYSQL_DATABASE: 'genaidb'
+       MYSQL_PASSWORD: 'root'
+       MYSQL_ROOT_PASSWORD: 'root'
+    networks:
+      - mynetwork
+    volumes:
+      - 'mysql_container:/var/lib/mysql'
+      - './init_mysql.sql:/docker-entrypoint-initdb.d/init_mysql.sql'
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+
+  postgres_container:
+    container_name: 'postgres_container'
+    image: postgres:14.2
+    mem_limit: 8g
+    ports:
+      - '5433:5432'
+    environment:
+      POSTGRES_DB: 'genaidb'
+      POSTGRES_USER: 'postgres_user'
+      POSTGRES_PASSWORD: 'postgres_password'
+    networks:
+      - mynetwork
+    volumes:
+      - 'postgres_container:/var/lib/postgresql/data'
+      - './init_postgres.sql:/docker-entrypoint-initdb.d/init_postgres.sql'
+    command: [ 'postgres', '-c', 'max_connections=100' ]
+
+  airflow_spark_container:
+    build: .
+    volumes:
+      - '.:/base_directory'
+    networks:
+      - mynetwork
+    ports:
+      - "8084:8080"
+      - "8793:8793"
+    depends_on:
+      - mysql_container
+      - postgres_container
+    env_file:
+      - .env
+
+volumes:
+  mysql_container:
+  postgres_container:
+  .:
+networks:
+  mynetwork:  # Define the network outside of services
