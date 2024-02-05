@@ -10,6 +10,7 @@ Setup:
 2. Run the command "docker-compose up"
 
 Run Dags:
-Load http://0.0.0.0:8084/home
+
+1. Load http://0.0.0.0:8084/home
 Username: admin
 Password: admin
