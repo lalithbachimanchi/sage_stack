@@ -20,9 +20,7 @@ destination_db_password=os.environ['POSTGRES_PASSWORD']
 
 # Set up Spark session
 spark = SparkSession.builder\
-    .appName("MySQLToPostgresMigration")\
-    .config("spark.driver.extraClassPath", "mysql-connector-j-8.1.0.jar")\
-    .getOrCreate()
+    .appName("MySQLToPostgresMigration").getOrCreate()
 
 # MySQL connection parameters
 mysql_url = f"jdbc:mysql://{source_db_host}:{source_db_port}/{source_db_database}"
@@ -40,24 +38,34 @@ postgres_properties = {
     "driver": "org.postgresql.Driver",
 }
 
-with open("TABLE_MAPPING_JSON_PATH", "r") as table_mapping_file:
+with open(os.environ["TABLE_MAPPING_JSON_PATH"], "r") as table_mapping_file:
     table_mapping_dict = json.loads(table_mapping_file.read())
 
 for source_table, destination_table in table_mapping_dict.items():
+    print(f"Processing tables: {source_table} to {destination_table}")
     # Read data from MySQL
     mysql_df = spark.read.jdbc(url=mysql_url, table=source_table, properties=mysql_properties)
 
+    print(f"Number of rows on source table before migration: {mysql_df.count()}")
+
     # Calculate the timestamp for one hour ago
     one_hour_ago = datetime.now() - timedelta(hours=1)
-    timestamp_condition = col("created").gt(one_hour_ago)
 
     # Filter data based on the timestamp condition
-    filtered_mysql_df = mysql_df.filter(timestamp_condition)
+    # filtered_mysql_df = mysql_df.filter(timestamp_condition)
+    filtered_mysql_df = mysql_df.filter(col("created") > one_hour_ago)
 
-    # Transform data if needed (you can perform additional transformations here)
+    print(f"Number of rows from source being inserted into destination: {filtered_mysql_df.count()}")
+
+    destination_df = spark.read.jdbc(url=postgres_url, table=destination_table, properties=postgres_properties)
+    print(f"Number of rows on destination table before migration: {destination_df.count()}")
 
     # Write data to PostgreSQL
-    filtered_mysql_df.write.jdbc(url=postgres_url, table=destination_table, mode="overwrite", properties=postgres_properties)
+    filtered_mysql_df.write.jdbc(url=postgres_url, table=destination_table, mode="append", properties=postgres_properties)
+
+    destination_df = spark.read.jdbc(url=postgres_url, table=destination_table, properties=postgres_properties)
+
+    print(f"Number of rows on destination table after migration: {destination_df.count()}")
 
 # Stop Spark session
 spark.stop()

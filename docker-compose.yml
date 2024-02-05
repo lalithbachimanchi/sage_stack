@@ -39,6 +39,10 @@ services:
     build: .
     volumes:
       - '.:/base_directory'
+      - './data:/opt/data'
+      - './great_expectations:/opt/great_expectations'
+      - './dags:/opt/airflow/dags/'
+      - './spark_jobs:/opt/spark/spark_jobs'
     networks:
       - mynetwork
     ports:

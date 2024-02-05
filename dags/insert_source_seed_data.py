@@ -10,17 +10,17 @@ default_args = {
 }
 
 insert_users_data_bash = """
-cd /root/data/source_seed_data
+cd /opt/data/source_seed_data
 python3 insert_source_seed_data_users.py
 """
 
 insert_posts_data_bash = """
-cd /root/data/source_seed_data
+cd /opt/data/source_seed_data
 python3 insert_seed_data_posts.py
 """
 
 insert_commerce_orders_data_bash = """
-cd /root/data/source_seed_data
+cd /opt/data/source_seed_data
 python3 insert_seed_data_commerce_order.py
 """
 

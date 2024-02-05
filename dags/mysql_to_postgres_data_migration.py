@@ -10,12 +10,12 @@ default_args = {
 }
 
 check_source_db_connection_bash = """
-cd /opt/spark/
+cd /opt/spark/data_migration
 python3 check_source_db_connection.py
 """
 
 check_destination_db_connection_bash = """
-cd /opt/spark/
+cd /opt/spark/data_migration
 python3 check_destination_db_connection.py
 """
 
@@ -25,7 +25,7 @@ python3 check_ge_db_connection.py
 """
 
 great_expectations_data_sanity_bash = """
-cd /opt/great_expectations/data_migration
+cd /opt/great_expectations/data_migration_tests
 python3 ge_pre_etl_data_validation.py
 """
 
@@ -37,7 +37,7 @@ python3 mysql_to_postgres_data_migration.py
 
 great_expectations_run_tests_bash = """
 cd /opt/great_expectations/data_migration_tests
-python3 post_tranformation_validation.py
+python3 ge_post_tranformation_validation.py
 """
 
 

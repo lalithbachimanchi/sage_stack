@@ -1,3 +1,3 @@
-{"users": "users", "usermeta": "usermeta", "posts": "posts",
-  "postmeta": "postmeta","commerce_order_items": "commerce_order_items",
-  "commerce_order_itemsmeta": "commerce_order_itemsmeta"}
+{"genaidb.users": "genaidb.users", "genaidb.usermeta": "genaidb.usermeta", "genaidb.posts": "genaidb.posts",
+  "genaidb.postmeta": "genaidb.postmeta","genaidb.commerce_order_items": "genaidb.commerce_order_items",
+  "genaidb.commerce_order_itemsmeta": "genaidb.commerce_order_itemsmeta"}

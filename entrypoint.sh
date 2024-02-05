@@ -15,7 +15,7 @@ airflow users create \
 -e admin@sampleadmin.com \
 -f Admin \
 -l User \
--p password \
+-p admin \
 -r Admin \
 -u admin
 
