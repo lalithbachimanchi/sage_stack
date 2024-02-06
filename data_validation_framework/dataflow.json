@@ -1,0 +1,23 @@
+{
+    "env":{
+        "LOG_PATH": "C:\\workdir\\data_validation\\ei_data_validation\\ei_data_validation\\logs"
+    },
+    "data_validation":{
+        "1":{
+            "count_validation": {
+                                "source": {"server": "mysql", "db": "genaidb", "table": "users" }, 
+                                "target": {"server": "postgresql", "db": "genaidb", "table": "users"}
+                            }
+        },
+        "2":{
+            "duplicate_check": {
+                        "server": "postgresql", "db": "genaidb", "table":"users", "columns_to_check": "id, user_login, user_pass"
+            }            
+        },
+        "4":{
+            "is_null_check": {
+                "server": "mysql", "db": "genaidb", "table": "users", "columns_to_check": "id, user_login, user_pass"
+            }
+        }
+    }
+}
