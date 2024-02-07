@@ -70,4 +70,4 @@ with DAG(
         bash_command=great_expectations_run_tests_bash,
     )
 
-check_source_db_connection >> check_destination_db_connection >> great_expectations_check_db_connection >> great_expectations_sanity_check >> data_migration_task >> great_expectations_run_tests
+check_db_connection >> great_expectations_check_db_connection >> great_expectations_sanity_check >> transformation_task >> great_expectations_run_tests
