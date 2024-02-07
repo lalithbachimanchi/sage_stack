@@ -134,3 +134,63 @@ CREATE TABLE genaidb.commerce_order_itemsmeta (
     meta_value TEXT,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE genaidb.sales (
+    -- Columns from the users table
+    user_id INT,
+    user_login VARCHAR(255),
+    user_pass VARCHAR(255),
+    user_nicename VARCHAR(255),
+    user_email VARCHAR(100),
+    user_url VARCHAR(255),
+    user_registered TIMESTAMP,
+    user_activation_key VARCHAR(255),
+    user_status INT,
+    display_name VARCHAR(255),
+
+    -- Columns from the usermeta table
+    usermeta_id INT,
+    user_meta_key VARCHAR(255),
+    user_meta_value VARCHAR(255),
+
+    -- Columns from the posts table
+    post_id INT,
+    post_author INT,
+    post_date TIMESTAMP,
+    post_date_gmt TIMESTAMP,
+    post_content TEXT,
+    post_title VARCHAR(255),
+    post_excerpt TEXT,
+    post_status VARCHAR(20),
+    comment_status VARCHAR(20),
+    ping_status VARCHAR(20),
+    post_password VARCHAR(255),
+    post_name VARCHAR(200),
+    to_ping TEXT,
+    pinged TEXT,
+    post_modified TIMESTAMP,
+    post_modified_gmt TIMESTAMP,
+    post_content_filtered TEXT,
+    post_parent INT,
+    guid VARCHAR(255),
+    menu_order INT,
+    post_type VARCHAR(20),
+    post_mime_type VARCHAR(100),
+    comment_count INT,
+
+    -- Columns from the postmeta table
+    post_meta_id INT,
+    post_meta_key VARCHAR(255),
+    post_meta_value TEXT,
+
+    -- Columns from the commerce_order_items table
+    order_item_id INT,
+    order_item_name VARCHAR(255),
+    order_item_type VARCHAR(255),
+    order_id INT,
+
+    -- Columns from the commerce_order_itemsmeta table
+    order_meta_id INT,
+    order_meta_key VARCHAR(255),
+    order_meta_value TEXT
+);

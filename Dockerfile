@@ -46,11 +46,14 @@ COPY great_expectations /opt/great_expectations/
 
 COPY table_mapping_json.json /opt/table_mapping_json.json
 
-# Set environment variables for Spark
-ENV SPARK_HOME=/opt/spark
-ENV PATH="${SPARK_HOME}/bin:${PATH}"
-ENV AIRFLOW_HOME=/opt/airflow
-ENV AIRFLOW__CORE__LOAD_EXAMPLES=False
+COPY airflow-reports /opt/airflow/plugins/
+
+## Set environment variables for Spark
+#ENV SPARK_HOME=/opt/spark
+#ENV PATH="${SPARK_HOME}/bin:${PATH}"
+#ENV AIRFLOW_HOME=/opt/airflow
+#ENV AIRFLOW__CORE__LOAD_EXAMPLES=False
+#ENV AIRFLOW__CORE__LAZY_DISCOVER_PROVIDERS=False
 
 # Expose Airflow webserver and scheduler ports
 EXPOSE 8080 8793

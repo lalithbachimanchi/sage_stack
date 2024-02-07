@@ -43,6 +43,7 @@ services:
       - './great_expectations:/opt/great_expectations'
       - './dags:/opt/airflow/dags/'
       - './spark_jobs:/opt/spark/spark_jobs'
+      - './airflow-reports:/opt/airflow/plugins'
     networks:
       - mynetwork
     ports:
