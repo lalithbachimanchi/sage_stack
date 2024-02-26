@@ -23,6 +23,8 @@ RUN apt-get update && apt-get install -y \
     libssl1.1 \
     && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && apt-get install -y postgresql postgresql-contrib libpq-dev
+
 
 COPY requirements.txt /opt/requirements.txt
 
@@ -41,6 +43,10 @@ COPY database_connectors /opt/database_connectors/
 COPY spark_jobs /opt/spark/
 
 COPY data /opt/data
+
+COPY logs /opt/logs
+
+COPY data_validation_framework /opt/data_validation_framework
 
 COPY great_expectations /opt/great_expectations/
 

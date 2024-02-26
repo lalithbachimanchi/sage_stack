@@ -38,14 +38,15 @@ with DAG(
         bash_command = insert_users_data_bash,
     )
 
-    insert_posts_data = BashOperator(
-        task_id='insert_posts_data',
-        bash_command=insert_posts_data_bash,
-    )
+    # insert_posts_data = BashOperator(
+    #     task_id='insert_posts_data',
+    #     bash_command=insert_posts_data_bash,
+    # )
+    #
+    # insert_commerce_orders_data = BashOperator(
+    #     task_id='insert_commerce_orders_data',
+    #     bash_command=insert_commerce_orders_data_bash,
+    # )
 
-    insert_commerce_orders_data = BashOperator(
-        task_id='insert_commerce_orders_data',
-        bash_command=insert_commerce_orders_data_bash,
-    )
-
-insert_users_data >> insert_posts_data >> insert_commerce_orders_data
+insert_users_data
+# insert_users_data >> insert_posts_data >> insert_commerce_orders_data

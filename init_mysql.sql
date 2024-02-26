@@ -62,7 +62,7 @@ CREATE TABLE genaidb.health_care_data (
 );
 
 CREATE TABLE genaidb.users (
-    ID INT,
+    user_id INT,
     user_login VARCHAR(255),
     user_pass VARCHAR(255),
     user_nicename VARCHAR(255),
@@ -84,7 +84,7 @@ CREATE TABLE genaidb.usermeta (
 );
 
 CREATE TABLE genaidb.posts (
-    ID INT,
+    post_id INT,
     post_author INT,
     post_date TIMESTAMP,
     post_date_gmt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -123,6 +123,7 @@ CREATE TABLE genaidb.commerce_order_items (
     order_item_name VARCHAR(255),
     order_item_type VARCHAR(255),
     order_id INT,
+    order_user INT,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

@@ -44,6 +44,7 @@ services:
       - './dags:/opt/airflow/dags/'
       - './spark_jobs:/opt/spark/spark_jobs'
       - './airflow-reports:/opt/airflow/plugins'
+      - './data_validation_framework:/opt/data_validation_framework'
     networks:
       - mynetwork
     ports:

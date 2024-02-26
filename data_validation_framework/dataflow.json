@@ -1,6 +1,6 @@
 {
     "env":{
-        "LOG_PATH": "C:\\workdir\\data_validation\\ei_data_validation\\ei_data_validation\\logs"
+        "LOG_PATH": "/opt/logs/"
     },
     "data_validation":{
         "1":{

@@ -37,8 +37,8 @@ python3 ge_post_tranformation_validation.py
 
 
 with DAG(
-    dag_id = 'Data_Migration_from_MySql_to_Postgres',
-    description = 'Migrate Data from Mysql to Postgres',
+    dag_id = 'ETL_Job',
+    description = 'ETL Job',
     default_args = default_args,
     start_date = days_ago(1),
     schedule_interval = '@daily',

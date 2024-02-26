@@ -156,7 +156,7 @@ if __name__ == "__main__":
             validation_dict=validation_dict["data_validation"]
         )
         result_html = html_table_creator(df_results)
-        with open("validation_results.html", 'w') as file:
+        with open(f"/opt/airflow/plugins/templates/validation_results_{datetime.datetime.now()}.html", 'w') as file:
             file.write(result_html)
         logger.info("Execution completed successfully")
         sys.exit(0)
