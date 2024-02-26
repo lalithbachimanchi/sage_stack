@@ -31,7 +31,7 @@ python3 post_tranformation_validation.py
 
 
 with DAG(
-    dag_id = 'SAGE_Stack_CSV_Processing',
+    dag_id = 'csv-into-database',
     description = 'Our first sage stack trail',
     default_args = default_args,
     start_date = days_ago(1),

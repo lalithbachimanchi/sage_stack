@@ -2,6 +2,10 @@
     "env":{
         "LOG_PATH": "/opt/logs/"
     },
+    "table_mapping_info": {"genaidb.users": "genaidb.users", "genaidb.usermeta": "genaidb.usermeta", "genaidb.posts": "genaidb.posts",
+  "genaidb.postmeta": "genaidb.postmeta","genaidb.commerce_order_items": "genaidb.commerce_order_items",
+  "genaidb.commerce_order_itemsmeta": "genaidb.commerce_order_itemsmeta"},
+
     "data_validation":{
         "1":{
             "count_validation": {
@@ -11,13 +15,31 @@
         },
         "2":{
             "duplicate_check": {
-                        "server": "postgresql", "db": "genaidb", "table":"users", "columns_to_check": "id, user_login, user_pass"
+                        "server": "postgresql", "db": "genaidb", "table":"users", "columns_to_check": "user_id, user_login, user_pass"
             }            
+        },
+        "3":{
+            "count_validation": {
+                                "source": {"server": "mysql", "db": "genaidb", "table": "usermeta" },
+                                "target": {"server": "postgresql", "db": "genaidb", "table": "usermeta"}
+                            }
         },
         "4":{
             "is_null_check": {
-                "server": "mysql", "db": "genaidb", "table": "users", "columns_to_check": "id, user_login, user_pass"
+                "server": "mysql", "db": "genaidb", "table": "users", "columns_to_check": "user_id, user_login, user_pass"
             }
+        },
+        "5":{
+            "count_validation": {
+                                "source": {"server": "mysql", "db": "genaidb", "table": "posts" },
+                                "target": {"server": "postgresql", "db": "genaidb", "table": "posts"}
+                            }
+        },
+        "6":{
+            "count_validation": {
+                                "source": {"server": "mysql", "db": "genaidb", "table": "commerce_order_itemsmeta" },
+                                "target": {"server": "postgresql", "db": "genaidb", "table": "commerce_order_itemsmeta"}
+                            }
         }
     }
 }

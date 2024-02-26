@@ -37,7 +37,7 @@ python3 ge_post_tranformation_validation.py
 
 
 with DAG(
-    dag_id = 'ETL_Job',
+    dag_id = 'etl-job',
     description = 'ETL Job',
     default_args = default_args,
     start_date = days_ago(1),

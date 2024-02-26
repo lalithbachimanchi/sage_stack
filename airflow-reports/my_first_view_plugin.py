@@ -2,6 +2,9 @@ from airflow.plugins_manager import AirflowPlugin
 from airflow.models.baseoperator import BaseOperatorLink
 from flask import Blueprint
 from flask_appbuilder import expose, BaseView as AppBuilderBaseView
+from jinja2 import Template
+
+import os
 
 # define a Flask blueprint
 my_blueprint = Blueprint(
@@ -18,7 +21,29 @@ class MyBaseView(AppBuilderBaseView):
     @expose("/")
     def test(self):
         # render the HTML file from the templates directory with content
-        return self.render_template("test.html", content="awesome")
+
+        # Define the directory path where the HTML files are located
+        directory_path = '/opt/airflow/plugins/templates/test_results'
+
+        # Get the list of HTML files in the directory
+        html_files = [f for f in os.listdir(directory_path) if f.endswith('.html')]
+
+        # Read the Jinja template file
+        # with open('html_list_template.html', 'r') as file:
+        #     template_str = file.read()
+
+        # Create a Jinja Template object
+        # template = Template(template_str)
+
+        # Render the template with the list of HTML files
+        # rendered_html = template.render(files=html_files)
+        # return rendered_html
+        return self.render_template("html_list_template.html", context={"files": html_files})
+
+    # @expose("/")
+    # def test(self):
+    #     # render the HTML file from the templates directory with content
+    #     return self.render_template("test.html", content="awesome")
 
 # instantiate MyBaseView
 my_view = MyBaseView()

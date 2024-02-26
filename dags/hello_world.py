@@ -11,7 +11,7 @@ default_args = {
 
 
 with DAG(
-    dag_id = 'hello_world',
+    dag_id = 'hello-world',
     description = 'Our first "Hello World" DAG!',
     default_args = default_args,
     start_date = days_ago(1),
