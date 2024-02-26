@@ -40,6 +40,13 @@
                                 "source": {"server": "mysql", "db": "genaidb", "table": "commerce_order_itemsmeta" },
                                 "target": {"server": "postgresql", "db": "genaidb", "table": "commerce_order_itemsmeta"}
                             }
+        },
+      "7":{
+            "row_level_comparision": {
+                                "source": {"server": "postgresql", "db": "genaidb", "query": "SELECT * FROM genaidb.commerce_order_itemsmeta"},
+                                "target": {"server": "postgresql", "db": "genaidb", "query": "SELECT * FROM genaidb.commerce_order_itemsmeta"}
+            }
         }
+
     }
 }

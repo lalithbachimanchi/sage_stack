@@ -6,10 +6,11 @@
     <title>HTML File List</title>
 </head>
 <body>
+{{ files }}
     <h1>List of HTML Files</h1>
     <ul>
         {% for file in files %}
-            <li><a href="{{ file }}">{{ file }}</a></li>
+            <li><a href="/opt/airflow/plugins/templates/test_results/{{ file }}">{{ file }}</a></li>
         {% endfor %}
     </ul>
 </body>

@@ -102,9 +102,27 @@ def validate_data(validation_dict):
             else:
                 run_status="Failed"
                 results.append((index+1, run_status, f"Nulls exist"))
+
+        if type_of_test == "row_level_comparision":
+            lhs_query = validation_dict[each_test][type_of_test]["source"]["query"]
+            df_lhs = db_command_executer_with_output(validation_dict[each_test][type_of_test]["source"]['server'],
+                                                     validation_dict[each_test][type_of_test]["source"]['db'], lhs_query)
+            rhs_query = validation_dict[each_test][type_of_test]["target"]["query"]
+            df_rhs = db_command_executer_with_output(validation_dict[each_test][type_of_test]["source"]['server'],
+                                                     validation_dict[each_test][type_of_test]["source"]['db'], rhs_query)
+            test_status = df_lhs.equals(df_rhs)
+            if test_status:
+                run_status = "Success"
+                results.append((index + 1, run_status, f"Data matched"))
+            else:
+                run_status = "Failed"
+                results.append((index + 1, run_status, "Data mismatch"))
+
     return pd.DataFrame(results, columns=["Test case", "Testing status", "Remarks"])
 
-    
+
+
+
 def html_table_creator(df):
     df = df.reset_index(drop=True)
     df = df.iloc[:,1:]

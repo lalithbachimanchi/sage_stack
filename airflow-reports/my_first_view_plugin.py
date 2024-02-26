@@ -29,16 +29,16 @@ class MyBaseView(AppBuilderBaseView):
         html_files = [f for f in os.listdir(directory_path) if f.endswith('.html')]
 
         # Read the Jinja template file
-        # with open('html_list_template.html', 'r') as file:
-        #     template_str = file.read()
+        with open('/opt/airflow/plugins/templates/html_list_template.html', 'r') as file:
+            template_str = file.read()
 
         # Create a Jinja Template object
-        # template = Template(template_str)
+        template = Template(template_str)
 
         # Render the template with the list of HTML files
-        # rendered_html = template.render(files=html_files)
-        # return rendered_html
-        return self.render_template("html_list_template.html", context={"files": html_files})
+        rendered_html = template.render(files=html_files)
+        return rendered_html
+        # return self.render_template("html_list_template.html", context={"files": html_files})
 
     # @expose("/")
     # def test(self):
