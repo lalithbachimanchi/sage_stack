@@ -22,6 +22,7 @@ logger = logging.getLogger(
 def argument_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument("--JSON_FILE_PATH")
+    parser.add_argument("--TEST_QUERY_KEYS", type=str)
     parser.add_argument("--LOG_PATH")
 
     parser.add_argument("--MYSQL_USERNAME1")
@@ -65,9 +66,12 @@ def argument_parser():
     return parsed_args, validation_dict
 
 
-def validate_data(validation_dict):
+def validate_data(validation_dict, test_cases):
     logger.info(f"Execution started")
     all_tests = list(validation_dict.keys())
+    if test_cases is not None:
+        test_cases = test_cases.split(",")
+        all_tests = [i for i in all_tests if str(i) in test_cases]
     results = []
     for index, each_test in enumerate(all_tests):
         logger.info(f"\nValidation of test case {index+1} started")
@@ -121,8 +125,6 @@ def validate_data(validation_dict):
     return pd.DataFrame(results, columns=["Test case", "Testing status", "Remarks"])
 
 
-
-
 def html_table_creator(df):
     df = df.reset_index(drop=True)
     df = df.iloc[:,1:]
@@ -171,7 +173,8 @@ if __name__ == "__main__":
     logger.info("\n")
     try:
         df_results = validate_data(
-            validation_dict=validation_dict["data_validation"]
+            validation_dict=validation_dict["data_validation"],
+            test_cases=args["TEST_QUERY_KEYS"]
         )
         result_html = html_table_creator(df_results)
         timestamp = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
