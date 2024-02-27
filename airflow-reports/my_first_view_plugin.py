@@ -3,6 +3,7 @@ from airflow.models.baseoperator import BaseOperatorLink
 from flask import Blueprint
 from flask_appbuilder import expose, BaseView as AppBuilderBaseView
 from jinja2 import Template
+from flask import send_from_directory
 
 import os
 
@@ -12,10 +13,12 @@ my_blueprint = Blueprint(
     __name__,
     # register airflow/plugins/templates as a Jinja template folder
     template_folder="templates",
+    static_folder="templates/test_results",
+    static_url_path='/reports/test_results'
 )
 
 # create a flask appbuilder BaseView
-class MyBaseView(AppBuilderBaseView):
+class Reports(AppBuilderBaseView):
     default_view = "test"
 
     @expose("/")
@@ -40,18 +43,23 @@ class MyBaseView(AppBuilderBaseView):
         return rendered_html
         # return self.render_template("html_list_template.html", context={"files": html_files})
 
+    # @app.route('/static_html/<path:path>')
+    # def serve_static_html(path):
+    #     return send_from_directory('/opt/airflow/static_html', path)
+
+
     # @expose("/")
     # def test(self):
     #     # render the HTML file from the templates directory with content
     #     return self.render_template("test.html", content="awesome")
 
 # instantiate MyBaseView
-my_view = MyBaseView()
+my_view = Reports()
 
 # define the path to my_view in the Airflow UI
 my_view_package = {
     # define the menu sub-item name
-    "name": "Test View",
+    "name": "Test Results",
     # define the top-level menu item
     "category": "Reports",
     "view": my_view,
@@ -66,18 +74,32 @@ class MyViewPlugin(AirflowPlugin):
     appbuilder_views = [my_view_package]
 
 
-class GlobalLink(BaseOperatorLink):
-    # name the link button
-    name = "Airflow docs"
+# static_html_blueprint = Blueprint(
+#     "static_html_blueprint",
+#     __name__,
+#     static_folder=os.path.join(os.path.dirname(__file__), "static"),
+#     static_url_path="/static/html",
+# )
 
-    # function determining the link
-    def get_link(self, operator, *, ti_key=None):
-        return "https://airflow.apache.org/"
+# @static_html_blueprint.route("/<path:filename>")
+# def serve_html(filename):
+#     return send_from_directory(static_html_blueprint.static_folder, filename)
+#
+# def load_plugin(app):
+#     app.register_blueprint(static_html_blueprint)
 
-
-# add the operator extra link to a plugin
-class MyGlobalLink(AirflowPlugin):
-    name = "my_plugin_name"
-    global_operator_extra_links = [
-        GlobalLink(),
-    ]
+# class GlobalLink(BaseOperatorLink):
+#     # name the link button
+#     name = "Airflow docs"
+#
+#     # function determining the link
+#     def get_link(self, operator, *, ti_key=None):
+#         return "https://airflow.apache.org/"
+#
+#
+# # add the operator extra link to a plugin
+# class MyGlobalLink(AirflowPlugin):
+#     name = "my_plugin_name"
+#     global_operator_extra_links = [
+#         GlobalLink(),
+#     ]

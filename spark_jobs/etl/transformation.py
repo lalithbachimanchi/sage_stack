@@ -1,12 +1,6 @@
 import os
-import json
-from datetime import datetime, timedelta
-from functools import reduce
-
 from pyspark.sql import SparkSession
-from pyspark.sql import SparkSession
-from pyspark.sql.types import StructType, StructField, StringType, IntegerType, TimestampType
-from pyspark.sql.functions import col, when, coalesce, lower, to_date
+from pyspark.sql.functions import col, when
 
 source_db_host=os.environ['MYSQL_HOST_NAME']
 source_db_database=os.environ['MYSQL_DATABASE']
@@ -33,56 +27,25 @@ postgres_properties = {
     "driver": "org.postgresql.Driver",
 }
 
-# empty_df = spark.createDataFrame()
-
-with open(os.environ["TABLE_MAPPING_JSON_PATH"], "r") as table_mapping_file:
-    table_mapping_dict = json.loads(table_mapping_file.read())
-
-for each_table in list(table_mapping_dict.values()):
-    pass
-
-
-
-
-df_list = []
-
-for each_table in list(table_mapping_dict.values()):
-    table_df = spark.read.jdbc(url=postgres_url, table=each_table, properties=postgres_properties)
-    df_list.append(table_df)
-
-
-
-from pyspark.sql import SparkSession
-
-# Create SparkSession
-spark = SparkSession.builder \
-    .appName("CreateSalesTable") \
-    .getOrCreate()
-
-# Load data from existing tables into DataFrames
-users_df = spark.read.jdbc(url=postgres_url, table="genaidb.users", properties=postgres_properties)
-usermeta_df = spark.read.jdbc(url=postgres_url, table="genaidb.usermeta", properties=postgres_properties)
-posts_df = spark.read.jdbc(url=postgres_url, table="genaidb.posts", properties=postgres_properties)
-postmeta_df = spark.read.jdbc(url=postgres_url, table="genaidb.postmeta", properties=postgres_properties)
-order_items_df = spark.read.jdbc(url=postgres_url, table="genaidb.commerce_order_items", properties=postgres_properties)
-order_itemsmeta_df = spark.read.jdbc(url=postgres_url, table="genaidb.commerce_order_itemsmeta", properties=postgres_properties)
-
-
-# Perform SQL join on user ID column
-joined_df = users_df.join(posts_df, users_df.user_id == posts_df.post_author, "inner") \
-    .join(order_items_df, users_df.user_id == order_items_df.order_user, "inner")
-
-final_df = joined_df.select(
-    col("user_id"), col("user_email"), col("user_url"), col("user_status"), col("display_name"),
-    col("post_id"), col("post_author"), col("post_title"), col("post_date"), col("post_excerpt"), col("post_status"),
-    col("post_name"),
-    col("post_content_filtered"),col("post_type"),
-    col("order_item_id"), col("order_item_name"), col("order_item_type"), col("order_id"),
-
-    # col("order_items_df.subscription_period"), col("order_items_df.qualify_rn"), col("order_items_df.SOURCE_SYSTEM"), col("order_items_df.PRODUCT_SEGMENT")
+query = """SELECT DISTINCT coi.order_item_id, coi.order_item_name,
+ coi.order_item_type, coi.order_id, p.post_id, p.post_content_filtered, p.post_type, p.post_name,
+ p.post_title, p.post_date, p.post_excerpt, p.post_status,
+  u.user_id, u.user_email, u.user_url, u.user_status, u.display_name
+FROM genaidb.commerce_order_items coi
+JOIN genaidb.posts p ON coi.order_user = p.post_author
+JOIN genaidb.users u ON coi.order_user = u.user_id
+AND NOT EXISTS (
+    SELECT 1
+    FROM genaidb.sales_view s
+    WHERE s.user_id = u.user_id
 )
+"""
 
-
+final_df = spark.read.format("jdbc") \
+    .option("url", postgres_url) \
+    .option("query", query) \
+    .options(**postgres_properties) \
+    .load()
 
 # Define the conditions and corresponding values
 conditions = [
@@ -122,7 +85,6 @@ conditions = [
 
 # Apply the conditions using when() and otherwise()
 subscription_period_df = product_seg_df.withColumn("subscription_period", when(conditions[0][0], conditions[0][1]).otherwise("NA"))
-
 
 
 conditions = (
