@@ -1,0 +1,76 @@
+{
+    "env":{
+        "LOG_PATH": "/opt/logs/"
+    },
+    "table_mapping_info": {"genaidb.users": "genaidb.users", "genaidb.usermeta": "genaidb.usermeta", "genaidb.posts": "genaidb.posts",
+  "genaidb.postmeta": "genaidb.postmeta","genaidb.commerce_order_items": "genaidb.commerce_order_items",
+  "genaidb.commerce_order_itemsmeta": "genaidb.commerce_order_itemsmeta"},
+
+    "data_validation":{
+        "1":{
+            "count_validation": {
+                                "source": {"server": "mysql", "db": "genaidb", "table": "users" }, 
+                                "target": {"server": "postgresql", "db": "genaidb", "table": "users"}
+                            }
+        },
+        "2":{
+            "duplicate_check": {
+                        "server": "postgresql", "db": "genaidb", "table":"users", "columns_to_check": "user_id, user_login, user_pass"
+            }            
+        },
+        "3":{
+            "count_validation": {
+                                "source": {"server": "mysql", "db": "genaidb", "table": "usermeta" },
+                                "target": {"server": "postgresql", "db": "genaidb", "table": "usermeta"}
+                            }
+        },
+        "4":{
+            "is_null_check": {
+                "server": "mysql", "db": "genaidb", "table": "users", "columns_to_check": "user_id, user_login, user_pass"
+            }
+        },
+        "5":{
+            "count_validation": {
+                                "source": {"server": "mysql", "db": "genaidb", "table": "posts" },
+                                "target": {"server": "postgresql", "db": "genaidb", "table": "posts"}
+                            }
+        },
+        "6":{
+            "count_validation": {
+                                "source": {"server": "mysql", "db": "genaidb", "table": "commerce_order_itemsmeta" },
+                                "target": {"server": "postgresql", "db": "genaidb", "table": "commerce_order_itemsmeta"}
+                            }
+        },
+      "7":{
+            "count_validation": {
+                                "source": {"server": "mysql", "db": "genaidb", "table": "commerce_order_items" },
+                                "target": {"server": "postgresql", "db": "genaidb", "table": "commerce_order_items"}
+                            }
+        },
+      "8":{
+            "count_validation": {
+                                "source": {"server": "mysql", "db": "genaidb", "table": "usermeta" },
+                                "target": {"server": "postgresql", "db": "genaidb", "table": "usermeta"}
+                            }
+        },
+      "9":{
+            "row_level_comparision": {
+                                "source": {"server": "postgresql", "db": "genaidb", "query": "SELECT\n    CASE\n        WHEN user_email LIKE '%liquidweb.com%' THEN true\n        WHEN user_email LIKE '%givewp.com%' THEN true\n        WHEN user_email LIKE '%iconicwp.com%' THEN true\n        WHEN user_email LIKE '%impress.org%' THEN true\n        WHEN user_email LIKE '%stellarwp.com%' THEN true\n        WHEN user_email LIKE '%ithemes.com%' THEN true\n        WHEN user_email LIKE '%kadencewp.com%' THEN true\n        WHEN user_email LIKE '%learndash.com%' THEN true\n        WHEN user_email LIKE '%nexcess.net%' THEN true\n        WHEN user_email LIKE '%tri.be%' THEN true\n        WHEN user_email LIKE '%wpbusinessreviews.com%' THEN true\n        WHEN user_email LIKE '%theeventscalendar.com%' THEN true\n        ELSE false\n    END AS test_email\nFROM genaidb.users;\n"},
+                                "target": {"server": "postgresql", "db": "genaidb", "query": "select test_email from genaidb.sales_view"}
+            }
+        },
+      "10":{
+            "row_level_comparision": {
+                                "source": {"server": "postgresql", "db": "genaidb", "query": "SELECT\n    CASE\n        WHEN order_item_type LIKE '%cloud%' THEN 'Cloud'\n        ELSE 'Plugin'\n    END AS product_segment\nFROM genaidb.commerce_order_items;\n"},
+                                "target": {"server": "postgresql", "db": "genaidb", "query": "select product_segment from genaidb.sales_view"}
+            }
+        },
+      "11":{
+            "row_level_comparision": {
+                                "source": {"server": "postgresql", "db": "genaidb", "query": "SELECT CASE\n        WHEN p.post_title = 'LearnDash Cloud' AND coi.order_item_name LIKE '%annual%' THEN 'Annual'\n        WHEN p.post_title = 'LearnDash Cloud' AND coi.order_item_name LIKE '%monthly%' THEN 'Monthly'\n        ELSE 'NA'\n    END AS subscription_period\nFROM genaidb.posts p\nJOIN genaidb.commerce_order_items coi ON p.post_author = coi.order_user;\n"},
+                                "target": {"server": "postgresql", "db": "genaidb", "query": "select subscription_period from genaidb.sales_view"}
+            }
+        }
+
+    }
+}

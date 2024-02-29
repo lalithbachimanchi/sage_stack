@@ -52,6 +52,8 @@ COPY great_expectations /opt/great_expectations/
 
 COPY table_mapping_json.json /opt/table_mapping_json.json
 
+COPY table_mapping.json /opt/table_mapping.json
+
 COPY airflow-reports /opt/airflow/plugins/
 
 ## Set environment variables for Spark

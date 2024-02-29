@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Reports</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .directory {
+            cursor: pointer;
+            list-style: none;
+            margin-bottom: 5px;
+        }
+        .directory img {
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+        }
+        .file-list {
+            display: none;
+            list-style: none;
+            padding-left: 20px;
+        }
+        .file-list a {
+            text-decoration: none;
+            color: #007bff;
+            display: block;
+            padding: 5px 0;
+        }
+        .file-list a:hover {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Test Reports</h1>
+        <ul>
+            {% for directory in directories %}
+                <li class="directory" onclick="toggleFileList('{{ directory }}')">
+                    <img src="https://cdn.jsdelivr.net/npm/feather-icons/dist/icons/folder.svg" alt="folder icon">
+                    {{ directory }}
+                </li>
+                <ul class="file-list" id="{{ directory }}">
+                    {% for file in files[directory] %}
+                        <li><a href="/reports/test_results/{{directory}}/{{ file }}">{{ file }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script>
+        function toggleFileList(directory) {
+            var fileList = document.getElementById(directory);
+            fileList.style.display = fileList.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>

@@ -49,11 +49,12 @@ for source_table, destination_table in table_mapping_dict.items():
     print(f"Number of rows on source table before migration: {mysql_df.count()}")
 
     # Calculate the timestamp for one hour ago
-    one_hour_ago = datetime.now() - timedelta(hours=1)
+    one_min_ago = datetime.now() - timedelta(minutes=5)
 
     # Filter data based on the timestamp condition
     # filtered_mysql_df = mysql_df.filter(timestamp_condition)
-    filtered_mysql_df = mysql_df.filter(col("created") > one_hour_ago)
+    filtered_mysql_df = mysql_df.filter((col("created") >= one_min_ago) & (col("created") < datetime.now()))
+    # filtered_mysql_df = mysql_df.filter(col("created") < one_min_ago)
 
     print(f"Number of rows from source being inserted into destination: {filtered_mysql_df.count()}")
 

@@ -2,7 +2,8 @@
 
 # Initialize the Airflow database
 
-pip freeze
+#pip freeze
+#great_expectations init
 airflow version
 
 sleep 5

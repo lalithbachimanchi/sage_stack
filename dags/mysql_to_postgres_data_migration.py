@@ -35,14 +35,14 @@ python3 mysql_to_postgres_data_migration.py
 """
 
 
-great_expectations_run_tests_bash = """
-cd /opt/great_expectations/data_migration_tests
-python3 ge_post_tranformation_validation.py
-"""
+# great_expectations_run_tests_bash = """
+# cd /opt/great_expectations/data_migration_tests
+# python3 ge_post_tranformation_validation.py
+# """
 
 data_validation_framework_tests_bash = """
 cd /opt/data_validation_framework/
-python3 main.py
+python3 main.py --TEST_CASE_KEYS=1,2,3,4,5,6,7,8 --DAG_ID=data-migration-from-mysql-to-postgres
 """
 
 with DAG(
@@ -50,7 +50,7 @@ with DAG(
     description = 'Migrate Data from Mysql to Postgres',
     default_args = default_args,
     start_date = days_ago(1),
-    schedule_interval = '@daily',
+    schedule_interval = None,
     tags = ['sql', 'bash', 'data migration']
 ) as dag:
     check_source_db_connection = BashOperator(
@@ -79,14 +79,14 @@ with DAG(
     )
 
 
-    great_expectations_run_tests = BashOperator(
-        task_id='great_expectations_run_tests',
-        bash_command=great_expectations_run_tests_bash,
-    )
+    # great_expectations_run_tests = BashOperator(
+    #     task_id='great_expectations_run_tests',
+    #     bash_command=great_expectations_run_tests_bash,
+    # )
 
     data_validation_framework_tests = BashOperator(
         task_id='data_validation_framework_tests',
         bash_command=data_validation_framework_tests_bash,
     )
 
-check_source_db_connection >> check_destination_db_connection >> great_expectations_check_db_connection >> great_expectations_sanity_check >> data_migration_task >> great_expectations_run_tests >> data_validation_framework_tests
+check_source_db_connection >> check_destination_db_connection >> great_expectations_check_db_connection >> great_expectations_sanity_check >> data_migration_task >> data_validation_framework_tests

@@ -20,14 +20,14 @@ with DAG(
     description = 'Insert Seed Data to Source Database Mysql',
     default_args = default_args,
     start_date = days_ago(1),
-    schedule_interval = '@daily',
+    schedule_interval = None,
     tags = ['sql', 'bash', 'seed data']
 ) as dag:
 
-    insert_users_data = BashOperator(
-        task_id = 'insert_users_data',
+    insert_seed_data = BashOperator(
+        task_id = 'insert_seed_data',
         bash_command = insert_users_data_bash,
     )
 
 
-insert_users_data
+insert_seed_data

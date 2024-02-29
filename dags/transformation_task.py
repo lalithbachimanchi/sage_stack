@@ -15,13 +15,13 @@ python3 check_destination_db_connection.py
 """
 
 great_expectations_check_db_connection_bash = """
-cd /opt/great_expectations/data_migration_tests
-python3 check_ge_db_connection.py
+cd /opt/great_expectations/etl_tests
+python3 check_ge_postgres_db_connection.py
 """
 
 great_expectations_data_sanity_bash = """
-cd /opt/great_expectations/data_migration_tests
-python3 ge_pre_etl_data_validation.py
+cd /opt/great_expectations/etl_tests
+python3 ge_pre_etl_data_validation_dw.py
 """
 
 transformation_task_bash = """
@@ -30,9 +30,9 @@ python3 transformation.py
 """
 
 
-great_expectations_run_tests_bash = """
-cd /opt/great_expectations/data_migration_tests
-python3 ge_post_tranformation_validation.py
+data_validation_framework_tests_bash = """
+cd /opt/data_validation_framework
+python3 main.py --TEST_CASE_KEYS=9,10,11 --DAG_ID=etl-job
 """
 
 
@@ -41,7 +41,7 @@ with DAG(
     description = 'ETL Job',
     default_args = default_args,
     start_date = days_ago(1),
-    schedule_interval = '@daily',
+    schedule_interval = None,
     tags = ['sql', 'bash', 'data migration']
 ) as dag:
     check_db_connection = BashOperator(
@@ -65,9 +65,9 @@ with DAG(
     )
 
 
-    great_expectations_run_tests = BashOperator(
-        task_id='great_expectations_run_tests',
-        bash_command=great_expectations_run_tests_bash,
+    data_validation_framework_tests = BashOperator(
+        task_id='data_validation_framework_tests',
+        bash_command=data_validation_framework_tests_bash,
     )
 
-check_db_connection >> great_expectations_check_db_connection >> great_expectations_sanity_check >> transformation_task >> great_expectations_run_tests
+check_db_connection >> great_expectations_check_db_connection >> great_expectations_sanity_check >> transformation_task >> data_validation_framework_tests

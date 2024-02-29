@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os
 
 
-def source_database_connect(database='genaidb'):
+def source_database_connect(database):
     load_dotenv()
     username = os.environ.get("MYSQL_USER")
     password = os.environ.get("MYSQL_PASSWORD")
@@ -17,7 +17,7 @@ def source_database_connect(database='genaidb'):
     return _engine
 
 
-def destination_database_connect(database='genaidb'):
+def destination_database_connect(database):
     load_dotenv()
     username = os.environ.get("POSTGRES_USER")
     password = os.environ.get("POSTGRES_PASSWORD")
@@ -32,14 +32,15 @@ def destination_database_connect(database='genaidb'):
 
 def db_command_executer_with_output(server, database, cmd, full_data=False):
     if server=='mysql':
-        _engine = destination_database_connect(database)
-    else:
         _engine = source_database_connect(database)
+    else:
+        _engine = destination_database_connect(database)
 
     connection = _engine.raw_connection()
     try:
         cursor_obj = connection.cursor()
         print(f"Executing command: {cmd}")
+        print(f"Db: {database}")
         cursor_obj.execute(cmd)
         if not full_data:
             result = cursor_obj.fetchmany(10)

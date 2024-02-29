@@ -17,6 +17,91 @@ my_blueprint = Blueprint(
     static_url_path='/reports/test_results'
 )
 
+
+def list_files_dict(directory, paths_to_consider):
+    # Initialize an empty dictionary to store the results
+    files_dict = {}
+    fd = {}
+
+    # List all files in the directory recursively
+    for root, dirs, files in os.walk(directory):
+
+        # Check if the current directory is in paths_to_consider and is not a subdirectory of any of the paths in paths_to_consider
+        if root in paths_to_consider and not any(root.startswith(p) and len(root) > len(p) and root[len(p)] == os.sep for p in paths_to_consider):
+            # Store the directory name as the key in the dictionary
+            files_dict[root] = []
+
+            # Append the list of file names to the value in the dictionary
+            for file in files:
+                full_path = os.path.join(root, file)
+                files_dict[root].append((full_path, os.stat(full_path).st_ctime))
+
+            # Sort the list of files based on their creation time
+            files_dict[root] = sorted(files_dict[root], key=lambda x: x[1])
+
+            # Convert the list of tuples back to a list of file paths
+            files_dict[root] = [file[0] for file in files_dict[root]]
+
+    for k, v in files_dict.items():
+        sp_dire = k.split('/')[-1]
+        fd[sp_dire] = []
+        for each_f in v:
+            fd[sp_dire].append(each_f.split('/')[-1])
+
+    return fd
+
+
+# def list_files_dict(directory, paths_to_consider):
+#     # Initialize an empty dictionary to store the results
+#     files_dict = {}
+#
+#     fd = {}
+#
+#     # List all files in the directory recursively
+#     for root, dirs, files in os.walk(directory):
+#
+#         # Check if the current directory is in paths_to_consider and is not a subdirectory of any of the paths in paths_to_consider
+#         if root in paths_to_consider and not any(root.startswith(p) and len(root) > len(p) and root[len(p)] == os.sep for p in paths_to_consider):
+#             # Store the directory name as the key in the dictionary
+#             files_dict[root] = []
+#
+#             # Append the list of file names to the value in the dictionary
+#             for file in files:
+#                 files_dict[root].append(os.path.join(root, file))
+#
+    for k,v in files_dict.items():
+        sp_dire = k.split('/')[-1]
+        fd[sp_dire] = []
+        for each_f in v:
+            fd[sp_dire].append(each_f.split('/')[-1])
+#
+#     return fd
+
+
+
+# def list_files_dict(directory):
+#     # Initialize an empty dictionary to store the results
+#     files_dict = {}
+#
+#     fd = {}
+#
+#     # List all files in the directory recursively
+#     for root, dirs, files in os.walk(directory):
+#
+#         # Store the directory name as the key in the dictionary
+#         files_dict[root] = []
+#
+#         # Append the list of file names to the value in the dictionary
+#         for file in files:
+#             files_dict[root].append(os.path.join(root, file))
+#     for k,v in files_dict.items():
+#         sp_dire = k.split('/')[-1]
+#         fd[sp_dire] = []
+#         for each_f in v:
+#             fd[sp_dire].append(each_f.split('/')[-1])
+#
+#     return fd
+
 # create a flask appbuilder BaseView
 class Reports(AppBuilderBaseView):
     default_view = "test"
@@ -25,22 +110,43 @@ class Reports(AppBuilderBaseView):
     def test(self):
         # render the HTML file from the templates directory with content
 
-        # Define the directory path where the HTML files are located
-        directory_path = '/opt/airflow/plugins/templates/test_results'
+        paths_to_consider = ['/opt/airflow/plugins/templates/test_results/etl-job',
+                             '/opt/airflow/plugins/templates/test_results/data-migration-from-mysql-to-postgres',
+                             '/opt/airflow/plugins/templates/test_results/great_expectation_test_results']
 
-        # Get the list of HTML files in the directory
-        html_files = [f for f in os.listdir(directory_path) if f.endswith('.html')]
+        result = list_files_dict('/opt/airflow/plugins/templates/test_results', paths_to_consider)
 
         # Read the Jinja template file
-        with open('/opt/airflow/plugins/templates/html_list_template.html', 'r') as file:
+        with open('/opt/airflow/plugins/templates/directory-list.html', 'r') as file:
             template_str = file.read()
 
         # Create a Jinja Template object
         template = Template(template_str)
 
         # Render the template with the list of HTML files
-        rendered_html = template.render(files=html_files)
+        rendered_html = template.render(files=result, directories=result)
         return rendered_html
+
+    # @expose("/test")
+    # def test(self):
+    #     # render the HTML file from the templates directory with content
+    #
+    #     # Define the directory path where the HTML files are located
+    #     directory_path = '/opt/airflow/plugins/templates/test_results'
+    #
+    #     # Get the list of HTML files in the directory
+    #     html_files = [f for f in os.listdir(directory_path) if f.endswith('.html')]
+    #
+    #     # Read the Jinja template file
+    #     with open('/opt/airflow/plugins/templates/html_list_template.html', 'r') as file:
+    #         template_str = file.read()
+    #
+    #     # Create a Jinja Template object
+    #     template = Template(template_str)
+    #
+    #     # Render the template with the list of HTML files
+    #     rendered_html = template.render(files=html_files)
+    #     return rendered_html
         # return self.render_template("html_list_template.html", context={"files": html_files})
 
     # @app.route('/static_html/<path:path>')
@@ -103,3 +209,9 @@ class MyViewPlugin(AirflowPlugin):
 #     global_operator_extra_links = [
 #         GlobalLink(),
 #     ]
+# paths_to_consider = ['/opt/airflow/plugins/templates/test_results/etl-job',
+#                      '/opt/airflow/plugins/templates/test_results/data-migration-from-mysql-to-postgres',
+#                      '/opt/airflow/plugins/templates/test_results/great_expectation_test_results']
+#
+# result = list_files_dict('/opt/airflow/plugins/templates/test_results', paths_to_consider)
+# print(result)

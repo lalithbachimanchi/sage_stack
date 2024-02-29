@@ -22,7 +22,8 @@ logger = logging.getLogger(
 def argument_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument("--JSON_FILE_PATH")
-    parser.add_argument("--TEST_QUERY_KEYS", type=str)
+    parser.add_argument("--DAG_ID", type=str)
+    parser.add_argument("--TEST_CASE_KEYS", type=str)
     parser.add_argument("--LOG_PATH")
 
     parser.add_argument("--MYSQL_USERNAME1")
@@ -42,7 +43,7 @@ def argument_parser():
         with open(parsed_args.JSON_FILE_PATH, "r") as fh:
             validation_dict = json.load(fh)
     else:
-        with open("dataflow.json", "r") as fh:
+        with open("/opt/table_mapping.json", "r") as fh:
             validation_dict = json.load(fh)
 
     if parsed_args.get("LOG_PATH") is None:
@@ -110,11 +111,15 @@ def validate_data(validation_dict, test_cases):
         if type_of_test == "row_level_comparision":
             lhs_query = validation_dict[each_test][type_of_test]["source"]["query"]
             df_lhs = db_command_executer_with_output(validation_dict[each_test][type_of_test]["source"]['server'],
-                                                     validation_dict[each_test][type_of_test]["source"]['db'], lhs_query)
+                                                     validation_dict[each_test][type_of_test]["source"]['db'], lhs_query, full_data=True)
             rhs_query = validation_dict[each_test][type_of_test]["target"]["query"]
             df_rhs = db_command_executer_with_output(validation_dict[each_test][type_of_test]["source"]['server'],
-                                                     validation_dict[each_test][type_of_test]["source"]['db'], rhs_query)
-            test_status = df_lhs.equals(df_rhs)
+                                                     validation_dict[each_test][type_of_test]["source"]['db'], rhs_query, full_data=True)
+
+            try:
+                test_status = df_lhs.equals(df_rhs)
+            except:
+                test_status = False
             if test_status:
                 run_status = "Success"
                 results.append((index + 1, run_status, f"Data matched"))
@@ -125,46 +130,85 @@ def validate_data(validation_dict, test_cases):
     return pd.DataFrame(results, columns=["Test case", "Testing status", "Remarks"])
 
 
+
 def html_table_creator(df):
     df = df.reset_index(drop=True)
-    df = df.iloc[:,1:]
-    html = """<h2> Validation status </h2>
-        <table border='1'>
-        <tr>
-            <th style='background-color:rgb(0, 153, 255);'>Test case No</th>
-            <th style='background-color:rgb(0, 153, 255);'>Testing status</th>
-            <th style='background-color:rgb(0, 153, 255);'>Remarks</th>
-        </tr>"""
-    
+    df = df.iloc[:, 1:]
+    html = """
+    <html>
+    <head>
+        <title>Validation Status</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+            }
+            .container {
+                max-width: 800px;
+                margin: 20px auto;
+                padding: 20px;
+                background-color: #fff;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            }
+            h2 {
+                color: #333;
+                margin-bottom: 20px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                border: 1px solid #ddd;
+            }
+            th, td {
+                padding: 10px;
+                border: 1px solid #ddd;
+                text-align: center;
+            }
+            th {
+                background-color: #007bff;
+                color: #fff;
+            }
+            .success {
+                background-color: #66ff99;
+            }
+            .failed {
+                background-color: #ff0000;
+                color: #fff;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h2>Validation Status</h2>
+            <table>
+                <tr>
+                    <th>Test case No</th>
+                    <th>Testing status</th>
+                    <th>Remarks</th>
+                </tr>
+    """
+
     for index, row in df.iterrows():
-        if str(row["Testing status"]).lower() == "success":
-            html = html + "<tr>"
-            html = html + "<td>" + str(index + 1) + "</td>"
-            for col in row:
-                if str(col).lower() == "success":
-                    html = (
-                        html
-                        + "<td style='background-color:rgb(102, 255, 153);'>"
-                        + str(col)
-                        + "</td>"
-                    )
-                else:
-                    html = html + """<td>""" + str(col) + "</td>"
-            html = html + "</tr>"
-        else:
-            html = html + "<tr>"
-            html = html + "<td>" + str(index + 1) + "</td>"
-            for col in row:
-                if str(col).lower() == "failed":
-                    html = (
-                        html
-                        + """<td style='background-color:rgb(255, 0, 0);'>"""
-                        + str(col)
-                        + "</td>"
-                    )
-                else:
-                    html = html + """<td>""" + str(col) + "</td>"
-            html = html + "</tr>"
+        html += "<tr>"
+        html += f"<td>{index + 1}</td>"
+        for col in row:
+            if str(col).lower() == "success":
+                html += f"""<td class="success">{col}</td>"""
+            elif str(col).lower() == "failed":
+                html += f"""<td class="failed">{col}</td>"""
+            else:
+                html += f"<td>{col}</td>"
+        html += "</tr>"
+
+    html += """
+            </table>
+        </div>
+    </body>
+    </html>
+    """
     return html
 
 
@@ -174,14 +218,26 @@ if __name__ == "__main__":
     try:
         df_results = validate_data(
             validation_dict=validation_dict["data_validation"],
-            test_cases=args["TEST_QUERY_KEYS"]
+            test_cases=args["TEST_CASE_KEYS"]
         )
+
         result_html = html_table_creator(df_results)
         timestamp = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-        with open(f'/opt/airflow/plugins/templates/test_results/validation_results_{timestamp}.html', 'w') as file:
+
+        dags_folder = args.get("DAG_ID") if args.get("DAG_ID") else 'untagged'
+
+        folder_name = f"/opt/airflow/plugins/templates/test_results/{dags_folder}"
+
+        if not os.path.exists(folder_name):
+            os.makedirs(folder_name)
+
+        with open(f'{folder_name}/validation_results_{timestamp}.html', 'w') as file:
             file.write(result_html)
         logger.info("Execution completed successfully")
-        sys.exit(0)
+
+        if 'failed' in [i.lower() for i in list(df_results['Testing status'].values)]:
+            raise Exception("Tests Failed")
+
     except Exception as e:
         logger.info("Failed due to error")
         logger.info(e)
