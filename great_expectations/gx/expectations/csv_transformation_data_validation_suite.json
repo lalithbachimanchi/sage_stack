@@ -1,0 +1,312 @@
+{
+  "data_asset_type": null,
+  "expectation_suite_name": "csv_transformation_data_validation_suite",
+  "expectations": [
+    {
+      "expectation_type": "expect_table_row_count_to_be_between",
+      "kwargs": {
+        "max_value": 1000001,
+        "min_value": 1
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_value_lengths_to_equal",
+      "kwargs": {
+        "column": "state",
+        "value": 2
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "external_account_id"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_unique",
+      "kwargs": {
+        "column": "external_account_id"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "original_balance"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "account_status"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_match_regex",
+      "kwargs": {
+        "column": "account_status",
+        "regex": "^(Active|Inactive|Closed)$"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "origination_date",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "date_last_worked",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "date_last_paid",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "date_last_promise",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_mean_to_be_between",
+      "kwargs": {
+        "column": "number_of_broken_promises",
+        "max_value": 100000,
+        "min_value": 1
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "date_last_contacted",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "date_last_text",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+  {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "date_last_email_response",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+  {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "date_last_email_open",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+  {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "date_last_email_sent",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "date_received",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "judgement_date",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "date_of_treatment",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "date_last_text_response",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "social_security_number"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_value_lengths_to_be_between",
+      "kwargs": {
+        "column": "zip_code",
+        "max_value": 6,
+        "min_value": 2
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_between",
+      "kwargs": {
+        "column": "current_balance",
+        "max_value": 99999,
+        "min_value": 1
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "origination_date"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_match_regex",
+      "kwargs": {
+        "column": "payment_channel",
+        "regex": "^(Online|Cash|Cheque)$"
+      },
+      "meta": {}
+    },
+     {
+      "expectation_type": "expect_column_values_to_match_regex",
+      "kwargs": {
+        "column": "is_historical",
+        "regex": "^(Yes|No)$"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_match_regex",
+      "kwargs": {
+        "column": "communication_preference",
+        "regex": "^(Email|Text|Phone)$"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_match_regex",
+      "kwargs": {
+        "column": "last_payment_type",
+        "regex": "^(Credit Card|Check)$"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_match_regex",
+      "kwargs": {
+        "column": "financial_class",
+        "regex": "^(A|B|C)$"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_match_regex",
+      "kwargs": {
+        "column": "patient_type",
+        "regex": "^(Inpatient|Outpatient)$"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_match_regex",
+      "kwargs": {
+        "column": "collection_type",
+        "regex": "^(Internal|External)$"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_match_regex",
+      "kwargs": {
+        "column": "text_response",
+        "regex": "^(Yes|No)$"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_between",
+      "kwargs": {
+        "column": "web_vists",
+        "max_value": 100,
+        "min_value": 1
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "date_of_birth"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_between",
+      "kwargs": {
+        "column": "age_in_years",
+        "max_value": 101,
+        "min_value": 18
+      },
+      "meta": {}
+    }
+  ],
+  "ge_cloud_id": null,
+  "meta": {
+    "citations": [
+      {
+        "citation_date": "2024-03-02T17:09:37.043729Z",
+        "comment": "Created by effective Rule-Based Profiler of OnboardingDataAssistant with the configuration included.\n"
+      },
+      {
+        "batch_request": {
+          "data_asset_name": "genaidb.health_care_data",
+          "data_connector_name": "default_inferred_data_connector_name",
+          "datasource_name": "mysql_datasource",
+          "limit": 1000
+        },
+        "citation_date": "2024-03-02T17:11:54.991402Z",
+        "comment": "Created suite added via CLI"
+      }
+    ],
+    "great_expectations_version": "0.18.10"
+  }
+}

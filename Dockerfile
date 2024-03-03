@@ -28,6 +28,8 @@ RUN apt-get update && apt-get install -y postgresql postgresql-contrib libpq-dev
 
 COPY requirements.txt /opt/requirements.txt
 
+RUN pip install --upgrade setuptools
+
 RUN pip install "apache-airflow[celery]==2.7.2" --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-2.7.2/constraints-3.8.txt"
 
 RUN pip install --no-cache-dir -r /opt/requirements.txt

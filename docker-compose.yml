@@ -4,6 +4,7 @@ services:
   mysql_container:
     container_name: 'mysql_container'
     image: mysql:5.7
+    platform: linux/x86_64
     mem_limit: 8g
     ports:
       - '3307:3306'
@@ -57,8 +58,8 @@ services:
       - .env
 
 volumes:
+  sage_stack:
   mysql_container:
   postgres_container:
-  .:
 networks:
   mynetwork:  # Define the network outside of services

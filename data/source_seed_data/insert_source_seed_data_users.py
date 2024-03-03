@@ -105,7 +105,7 @@ def generate_fake_ordermeta_data(order_item_id):
 
 
 # Number of records to insert
-num_records = 50
+num_records = 200
 
 user_ids = []
 post_ids = []
