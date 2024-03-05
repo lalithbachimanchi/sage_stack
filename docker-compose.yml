@@ -36,6 +36,16 @@ services:
       - './init_postgres.sql:/docker-entrypoint-initdb.d/init_postgres.sql'
     command: [ 'postgres', '-c', 'max_connections=100' ]
 
+  streamlit_container:
+    build: .
+    volumes:
+      - './llm:/opt/llm'
+    networks:
+      - mynetwork
+    ports:
+      - "8501:8501"
+    command: streamlit run /opt/llm/gpt-integration.py --server.port 8501
+
   airflow_spark_container:
     build: .
     volumes:
@@ -56,10 +66,11 @@ services:
       - postgres_container
     env_file:
       - .env
+    command: ./entrypoint.sh
 
 volumes:
   sage_stack:
   mysql_container:
   postgres_container:
 networks:
-  mynetwork:  # Define the network outside of services
+  mynetwork:

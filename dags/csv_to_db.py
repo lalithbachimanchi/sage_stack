@@ -37,7 +37,7 @@ python3 ge_post_transformation_tests.py
 
 
 with DAG(
-    dag_id = 'live-streaming-data-processing',
+    dag_id = 'event-driven-streaming-data-processing',
     description = 'DAG which validates, transforms live csv data into database and performs post transformation validations',
     default_args = default_args,
     start_date = days_ago(1),

@@ -1,0 +1,61 @@
+
+    <html>
+    <head>
+        <title>Validation Status</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f4;
+            }
+            .container {
+                max-width: 800px;
+                margin: 20px auto;
+                padding: 20px;
+                background-color: #fff;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            }
+            h2 {
+                color: #333;
+                margin-bottom: 20px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                border: 1px solid #ddd;
+            }
+            th, td {
+                padding: 10px;
+                border: 1px solid #ddd;
+                text-align: center;
+            }
+            th {
+                background-color: #007bff;
+                color: #fff;
+            }
+            .success {
+                background-color: #66ff99;
+            }
+            .failed {
+                background-color: #ff0000;
+                color: #fff;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h2>Validation Status</h2>
+            <table>
+                <tr>
+                    <th>Test case No</th>
+                    <th>Testing status</th>
+                    <th>Remarks</th>
+                </tr>
+    <tr><td>1</td><td class="failed">Failed</td><td>Data mismatch</td></tr><tr><td>2</td><td class="failed">Failed</td><td>Data mismatch</td></tr><tr><td>3</td><td class="failed">Failed</td><td>Data mismatch</td></tr>
+            </table>
+        </div>
+    </body>
+    </html>
+    

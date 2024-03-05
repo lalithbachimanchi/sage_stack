@@ -55,38 +55,6 @@
       "meta": {}
     },
     {
-      "expectation_type": "expect_column_values_to_be_of_type",
-      "kwargs": {
-        "column": "origination_date",
-        "type_": "DATE"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_be_of_type",
-      "kwargs": {
-        "column": "date_last_worked",
-        "type_": "DATE"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_be_of_type",
-      "kwargs": {
-        "column": "date_last_paid",
-        "type_": "DATE"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_be_of_type",
-      "kwargs": {
-        "column": "date_last_promise",
-        "type_": "DATE"
-      },
-      "meta": {}
-    },
-    {
       "expectation_type": "expect_column_mean_to_be_between",
       "kwargs": {
         "column": "number_of_broken_promises",
@@ -99,70 +67,6 @@
       "expectation_type": "expect_column_values_to_be_of_type",
       "kwargs": {
         "column": "date_last_contacted",
-        "type_": "DATE"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_be_of_type",
-      "kwargs": {
-        "column": "date_last_text",
-        "type_": "DATE"
-      },
-      "meta": {}
-    },
-  {
-      "expectation_type": "expect_column_values_to_be_of_type",
-      "kwargs": {
-        "column": "date_last_email_response",
-        "type_": "DATE"
-      },
-      "meta": {}
-    },
-  {
-      "expectation_type": "expect_column_values_to_be_of_type",
-      "kwargs": {
-        "column": "date_last_email_open",
-        "type_": "DATE"
-      },
-      "meta": {}
-    },
-  {
-      "expectation_type": "expect_column_values_to_be_of_type",
-      "kwargs": {
-        "column": "date_last_email_sent",
-        "type_": "DATE"
-      },
-      "meta": {}
-    },
-     {
-      "expectation_type": "expect_column_values_to_be_of_type",
-      "kwargs": {
-        "column": "date_received",
-        "type_": "DATE"
-      },
-      "meta": {}
-    },
-     {
-      "expectation_type": "expect_column_values_to_be_of_type",
-      "kwargs": {
-        "column": "judgement_date",
-        "type_": "DATE"
-      },
-      "meta": {}
-    },
-     {
-      "expectation_type": "expect_column_values_to_be_of_type",
-      "kwargs": {
-        "column": "date_of_treatment",
-        "type_": "DATE"
-      },
-      "meta": {}
-    },
-     {
-      "expectation_type": "expect_column_values_to_be_of_type",
-      "kwargs": {
-        "column": "date_last_text_response",
         "type_": "DATE"
       },
       "meta": {}
@@ -285,6 +189,102 @@
         "column": "age_in_years",
         "max_value": 101,
         "min_value": 18
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "date_last_text",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+  {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "date_last_email_response",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+  {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "date_last_email_open",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+  {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "date_last_email_sent",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "date_received",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "judgement_date",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "date_of_treatment",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "date_last_text_response",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+     {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "origination_date",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "date_last_worked",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "date_last_paid",
+        "type_": "DATE"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_of_type",
+      "kwargs": {
+        "column": "date_last_promise",
+        "type_": "DATE"
       },
       "meta": {}
     }

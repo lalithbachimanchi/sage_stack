@@ -1,26 +1,72 @@
-import openai
+import streamlit as st
+from openai import OpenAI
+import os
+import datetime
 
-# Replace 'YOUR_API_KEY' with your actual OpenAI API key
-api_key = 'YOUR_API_KEY'
+max_tokens = int(os.environ.get('OPENAI_MAX_TOKENS', '4000'))
+model = os.environ.get('OPENAI_MODEL', 'gpt-3.5-turbo')
 
-# Initialize the OpenAI API client
-openai.api_key = api_key
 
-# Function to interact with ChatGPT
-def chat_with_gpt(prompt):
-    response = openai.Completion.create(
-        engine="davinci",  # You can choose a different engine like "text-davinci-002" if needed.
-        prompt=prompt,
-        max_tokens=50  # Adjust this value based on the desired response length.
-    )
-    return response.choices[0].text.strip()
+@st.cache_data
+def generate_gpt_response(api_key, prompt):
 
-# Main loop for user interaction
-while True:
-    user_input = input("You: ")
-    if user_input.lower() == "exit":
-        print("ChatGPT: Goodbye!")
-        break
-    prompt = f"You: {user_input}\nChatGPT:"
-    response = chat_with_gpt(prompt)
-    print("ChatGPT:", response)
+    messages = [{"role": "system",
+                 "content": " Respond with complete details"}]
+    if prompt:
+        messages.append({"role": "user", "content": f"{prompt}"})
+
+    print(messages)
+    try:
+        client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+
+        response = client.chat.completions.create(
+            model=model,
+            messages= messages,
+            max_tokens=int(max_tokens),
+        )
+        print(f"Tokens Used for Generating Code: {response.usage.completion_tokens}")
+        st.write(f"Tokens Used for generating response: {response.usage.completion_tokens}")
+
+        print(f"GPT Response: {response.json()}")
+
+        return response.choices[0].message.content
+    except Exception as e:
+        print(f'Exception Occurred On GPT API: {e}')
+        return None
+
+
+def main():
+    st.title("Chatbot for LLM")
+
+    with st.sidebar:
+        with st.form(key="user_choices", clear_on_submit=False):
+            llm_model = st.radio(label='Select LLM Model', options=['Chat GPT', 'Gemini', 'LLAMA2'])
+            open_api_key = st.text_input("Enter LLM Auth Key", type="password")
+            parse_apis_submitted = st.form_submit_button("Validate Auth Key")
+
+        if parse_apis_submitted:
+            if not open_api_key:
+                st.error('Please enter your OpenAI API key!', icon='⚠')
+                st.stop()
+            if open_api_key:
+                os.environ["OPENAI_API_KEY"] = open_api_key
+
+    with st.form(key="select_apis", clear_on_submit=True):
+        user_input = st.text_area("User Input")
+
+        api_submitted = st.form_submit_button("Generate LLM Response")
+
+    if api_submitted:
+        resp = generate_gpt_response(api_key=os.environ['OPENAI_API_KEY'],prompt=user_input)
+        st.markdown(resp)
+        st.download_button(
+            label="Download Response",
+            data=resp,
+            file_name=f"llm_response_{datetime.datetime.now()}.txt",
+            mime="text/plain",
+            key=f"download_button",
+        )
+
+# Run the Streamlit app
+if __name__ == "__main__":
+    main()

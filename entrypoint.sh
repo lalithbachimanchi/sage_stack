@@ -4,6 +4,7 @@
 
 #pip freeze
 #great_expectations init
+
 airflow version
 
 sleep 5

@@ -46,6 +46,8 @@ COPY spark_jobs /opt/spark/
 
 COPY data /opt/data
 
+COPY llm /opt/llm
+
 COPY logs /opt/logs
 
 COPY data_validation_framework /opt/data_validation_framework
@@ -66,7 +68,7 @@ COPY airflow-reports /opt/airflow/plugins/
 #ENV AIRFLOW__CORE__LAZY_DISCOVER_PROVIDERS=False
 
 # Expose Airflow webserver and scheduler ports
-EXPOSE 8080 8793
+EXPOSE 8080 8793 8501
 
 # Copy the Airflow configuration file
 COPY dags /opt/airflow/dags/
@@ -76,5 +78,5 @@ COPY entrypoint.sh /entrypoint.sh
 # Make the script executable
 RUN chmod +x /entrypoint.sh
 
-CMD ["/entrypoint.sh"]
+#CMD ["/entrypoint.sh"]
 # CMD ["airflow", "scheduler", "&&", "airflow", "webserver"]

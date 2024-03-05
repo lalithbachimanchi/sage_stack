@@ -51,56 +51,6 @@ def list_files_dict(directory, paths_to_consider):
     return fd
 
 
-# def list_files_dict(directory, paths_to_consider):
-#     # Initialize an empty dictionary to store the results
-#     files_dict = {}
-#
-#     fd = {}
-#
-#     # List all files in the directory recursively
-#     for root, dirs, files in os.walk(directory):
-#
-#         # Check if the current directory is in paths_to_consider and is not a subdirectory of any of the paths in paths_to_consider
-#         if root in paths_to_consider and not any(root.startswith(p) and len(root) > len(p) and root[len(p)] == os.sep for p in paths_to_consider):
-#             # Store the directory name as the key in the dictionary
-#             files_dict[root] = []
-#
-#             # Append the list of file names to the value in the dictionary
-#             for file in files:
-#                 files_dict[root].append(os.path.join(root, file))
-#
-    for k,v in files_dict.items():
-        sp_dire = k.split('/')[-1]
-        fd[sp_dire] = []
-        for each_f in v:
-            fd[sp_dire].append(each_f.split('/')[-1])
-#
-#     return fd
-
-
-
-# def list_files_dict(directory):
-#     # Initialize an empty dictionary to store the results
-#     files_dict = {}
-#
-#     fd = {}
-#
-#     # List all files in the directory recursively
-#     for root, dirs, files in os.walk(directory):
-#
-#         # Store the directory name as the key in the dictionary
-#         files_dict[root] = []
-#
-#         # Append the list of file names to the value in the dictionary
-#         for file in files:
-#             files_dict[root].append(os.path.join(root, file))
-#     for k,v in files_dict.items():
-#         sp_dire = k.split('/')[-1]
-#         fd[sp_dire] = []
-#         for each_f in v:
-#             fd[sp_dire].append(each_f.split('/')[-1])
-#
-#     return fd
 
 # create a flask appbuilder BaseView
 class Reports(AppBuilderBaseView):
@@ -110,7 +60,7 @@ class Reports(AppBuilderBaseView):
     def test(self):
         # render the HTML file from the templates directory with content
 
-        paths_to_consider = ['/opt/airflow/plugins/templates/test_results/etl-job',
+        paths_to_consider = ['/opt/airflow/plugins/templates/test_results/extract-transform-load',
                              '/opt/airflow/plugins/templates/test_results/data-migration-from-mysql-to-postgres',
                              '/opt/airflow/plugins/templates/test_results/great_expectation_test_results']
 

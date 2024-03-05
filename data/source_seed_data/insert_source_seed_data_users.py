@@ -2,6 +2,7 @@ import mysql.connector
 from faker import Faker
 from datetime import datetime, timedelta
 import os
+import uuid
 
 # Connect to MySQL
 # connection = mysql.connector.connect(
@@ -25,7 +26,8 @@ connection = mysql.connector.connect(
 def generate_fake_user_data():
     fake = Faker()
     return {
-        'user_id': fake.unique.random_number(digits=5),
+        # 'user_id': fake.unique.random_number(digits=5),
+        'user_id': str(uuid.uuid4()),
         'user_login': fake.user_name(),
         'user_pass': fake.password(),
         'user_nicename': fake.user_name(),
@@ -49,7 +51,7 @@ def generate_fake_usermeta_data(user_id):
 def generate_fake_post_data(user_id):
     fake = Faker()
     return {
-        'post_id': fake.unique.random_number(digits=5),
+        'post_id': str(uuid.uuid4()),
         'post_author': user_id,
         'post_date': fake.date_time_this_decade(),
         'post_date_gmt': fake.date_time_this_decade(),
@@ -77,7 +79,7 @@ def generate_fake_post_data(user_id):
 def generate_fake_postmeta_data(post_id):
     fake = Faker()
     return {
-        'meta_id': fake.unique.random_number(digits=5),
+        'meta_id': str(uuid.uuid4()),
         'post_id': post_id,
         'meta_key': fake.word(),
         'meta_value': fake.text()
@@ -86,7 +88,7 @@ def generate_fake_postmeta_data(post_id):
 def generate_fake_order_data(user_id):
     fake = Faker()
     return {
-        'order_item_id': fake.unique.random_number(digits=5),
+        'order_item_id': str(uuid.uuid4()),
         'order_item_name': fake.word(),
         'order_item_type': fake.word(),
         'order_id': fake.unique.random_number(digits=5),
@@ -97,7 +99,7 @@ def generate_fake_order_data(user_id):
 def generate_fake_ordermeta_data(order_item_id):
     fake = Faker()
     return {
-        'meta_id': fake.unique.random_number(digits=5),
+        'meta_id': str(uuid.uuid4()),
         'order_item_id': order_item_id,
         'meta_key': fake.word(),
         'meta_value': fake.text()
@@ -105,7 +107,7 @@ def generate_fake_ordermeta_data(order_item_id):
 
 
 # Number of records to insert
-num_records = 200
+num_records = 100
 
 user_ids = []
 post_ids = []

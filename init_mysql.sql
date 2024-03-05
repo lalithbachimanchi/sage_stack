@@ -62,7 +62,7 @@ CREATE TABLE genaidb.health_care_data (
 );
 
 CREATE TABLE genaidb.users (
-    user_id INT,
+    user_id VARCHAR(255),
     user_login VARCHAR(255),
     user_pass VARCHAR(255),
     user_nicename VARCHAR(255),
@@ -76,16 +76,16 @@ CREATE TABLE genaidb.users (
 );
 
 CREATE TABLE genaidb.usermeta (
-    umeta_id INT,
-    user_id INT,
+    umeta_id VARCHAR(255),
+    user_id VARCHAR(255),
     meta_key VARCHAR(255),
     meta_value VARCHAR(255),
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE genaidb.posts (
-    post_id INT,
-    post_author INT,
+    post_id VARCHAR(255),
+    post_author VARCHAR(255),
     post_date TIMESTAMP,
     post_date_gmt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     post_content TEXT,
@@ -111,25 +111,25 @@ CREATE TABLE genaidb.posts (
 );
 
 CREATE TABLE genaidb.postmeta (
-    meta_id INT,
-    post_id INT,
+    meta_id VARCHAR(255),
+    post_id VARCHAR(255),
     meta_key VARCHAR(255),
     meta_value TEXT,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE genaidb.commerce_order_items (
-    order_item_id INT,
+    order_item_id VARCHAR(255),
     order_item_name VARCHAR(255),
     order_item_type VARCHAR(255),
-    order_id INT,
-    order_user INT,
+    order_id VARCHAR(255),
+    order_user VARCHAR(255),
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE genaidb.commerce_order_itemsmeta (
-    meta_id INT,
-    order_item_id INT,
+    meta_id VARCHAR(255),
+    order_item_id VARCHAR(255),
     meta_key VARCHAR(255),
     meta_value TEXT,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP

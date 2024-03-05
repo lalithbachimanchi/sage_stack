@@ -9,3 +9,9 @@ flask-admin==1.6.1
 typing-extensions==4.9.0
 python-dotenv==1.0.1
 psycopg2
+openai
+streamlit==1.31.0
+watchdog
+glom
+jinja2
+html2text
