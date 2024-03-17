@@ -33,7 +33,7 @@ CREATE TABLE genaidb.health_care_data (
     insurance_carrier VARCHAR(255),
     judgement_date DATE,
     current_balance DECIMAL(10, 2),
-    is_historical BOOLEAN,
+    is_historical VARCHAR(255),
     communication_preference VARCHAR(255),
     number_of_calls_received INT,
     number_of_estatements_sent INT,

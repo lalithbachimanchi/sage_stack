@@ -38,6 +38,8 @@ services:
 
   streamlit_container:
     build: .
+    env_file:
+      - .env
     volumes:
       - './llm:/opt/llm'
     networks:

@@ -21,14 +21,22 @@
     {
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
+        "column": "state"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
         "column": "external_account_id"
       },
       "meta": {}
     },
     {
-      "expectation_type": "expect_column_values_to_be_unique",
+      "expectation_type": "expect_column_values_to_match_regex",
       "kwargs": {
-        "column": "external_account_id"
+        "column": "email_address",
+        "regex": "@example."
       },
       "meta": {}
     },
@@ -180,15 +188,6 @@
       "expectation_type": "expect_column_values_to_not_be_null",
       "kwargs": {
         "column": "date_of_birth"
-      },
-      "meta": {}
-    },
-    {
-      "expectation_type": "expect_column_values_to_be_between",
-      "kwargs": {
-        "column": "age_in_years",
-        "max_value": 101,
-        "min_value": 18
       },
       "meta": {}
     },

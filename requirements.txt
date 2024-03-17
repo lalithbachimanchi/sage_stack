@@ -15,3 +15,6 @@ watchdog
 glom
 jinja2
 html2text
+flask
+kafka-python
+schedule
